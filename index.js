@@ -113,11 +113,11 @@ export const registerAppWithDescription = wrapRegisterApp(
 export const isWXAppInstalled = wrapApi(WeChat.isWXAppInstalled);
 
 /**
- * Return if the wechat application supports the api
+ * Return if the wechat application supports the api iOS Only
  * @method isWXAppSupportApi
  * @return {Promise}
  */
-export const isWXAppSupportApi = wrapApi(WeChat.isWXAppSupportApi);
+export const isWXAppSupportApi = Platform.OS === 'ios'?wrapApi(WeChat.isWXAppSupportApi):null;
 
 /**
  * Get the wechat app installed url
@@ -145,6 +145,7 @@ const nativeShareToTimeline = wrapApi(WeChat.shareToTimeline);
 const nativeShareToSession = wrapApi(WeChat.shareToSession);
 const nativeShareToFavorite = wrapApi(WeChat.shareToFavorite);
 const nativeSendAuthRequest = wrapApi(WeChat.sendAuthRequest);
+const nativeLaunchMiniProgram = wrapApi(WeChat.launchMiniProgram);
 
 /**
  * @method sendAuthRequest
@@ -188,6 +189,27 @@ export function shareToTimeline(data) {
       }
     });
   });
+}
+
+/**
+ * launch miniProgram
+ * @method launchMiniProgram
+ * @param {Object} data
+ * @param {String} data.userName - 小程序原始id，必填。
+ * @param {String} data.path - 拉起小程序页面的可带参路径，不填默认拉起小程序首页。
+ * @param {String} data.miniprogramType - 可选:  0正式版\1开发版\2体验版和,默认0
+ */
+export function launchMiniProgram(data) {
+    return new Promise((resolve, reject) => {
+        nativeLaunchMiniProgram(data);
+        emitter.once('SendMessageToWX.Resp', resp => {
+            if (resp.errCode === 0) {
+                resolve(resp);
+            } else {
+                reject(new WechatError(resp));
+            }
+        });
+    });
 }
 
 /**

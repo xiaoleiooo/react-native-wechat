@@ -70,7 +70,7 @@ RCT_EXPORT_METHOD(registerAppWithDescription:(NSString *)appid
                   :(NSString *)appdesc
                   :(RCTResponseSenderBlock)callback)
 {
-    callback(@[[WXApi registerApp:appid withDescription:appdesc] ? [NSNull null] : INVOKE_FAILED]);
+    callback(@[[WXApi registerApp:appid] ? [NSNull null] : INVOKE_FAILED]);
 }
 
 RCT_EXPORT_METHOD(isWXAppInstalled:(RCTResponseSenderBlock)callback)
@@ -171,6 +171,29 @@ RCT_EXPORT_METHOD(pay:(NSDictionary *)data
     req.package             = data[@"package"];
     req.sign                = data[@"sign"];
     BOOL success = [WXApi sendReq:req];
+    callback(@[success ? [NSNull null] : INVOKE_FAILED]);
+}
+
+RCT_EXPORT_METHOD(launchMiniProgram:(NSDictionary *)data
+                  :(RCTResponseSenderBlock)callback)
+{
+    WXLaunchMiniProgramReq *launchMiniProgramReq = [WXLaunchMiniProgramReq object];
+    NSArray *keys = [data allKeys];
+    if(![keys containsObject:@"userName"]){
+        callback(@[INVOKE_FAILED]);
+    }else{
+        launchMiniProgramReq.userName = [data objectForKey:@"userName"];  //拉起的小程序的username
+        if([keys containsObject:@"path"]){
+            launchMiniProgramReq.path = [data objectForKey:@"path"];//拉起小程序页面的可带参路径，不填默认拉起小程序首页
+        }
+        if([keys containsObject:@"miniprogramType"]){
+            launchMiniProgramReq.miniProgramType = [[data objectForKey:@"miniprogramType"] intValue]; //拉起小程序的类型
+        }else{
+            launchMiniProgramReq.miniProgramType = WXMiniProgramTypeRelease; //拉起小程序的类型
+        }
+        
+    }
+    BOOL success = [WXApi sendReq:launchMiniProgramReq];
     callback(@[success ? [NSNull null] : INVOKE_FAILED]);
 }
 
