@@ -202,7 +202,7 @@ export function shareToTimeline(data) {
 export function launchMiniProgram(data) {
     return new Promise((resolve, reject) => {
         nativeLaunchMiniProgram(data);
-        emitter.once('SendMessageToWX.Resp', resp => {
+        emitter.once('LaunchMiniProgramFromWX.Resp', resp => {
             if (resp.errCode === 0) {
                 resolve(resp);
             } else {
