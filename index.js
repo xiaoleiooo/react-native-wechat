@@ -146,6 +146,7 @@ const nativeShareToSession = wrapApi(WeChat.shareToSession);
 const nativeShareToFavorite = wrapApi(WeChat.shareToFavorite);
 const nativeSendAuthRequest = wrapApi(WeChat.sendAuthRequest);
 const nativeLaunchMiniProgram = wrapApi(WeChat.launchMiniProgram);
+const nativeLaunchGGH = wrapApi(WeChat.launchGGH);
 
 /**
  * @method sendAuthRequest
@@ -203,6 +204,27 @@ export function launchMiniProgram(data) {
     return new Promise((resolve, reject) => {
         nativeLaunchMiniProgram(data);
         emitter.once('LaunchMiniProgramFromWX.Resp', resp => {
+            if (resp.errCode === 0) {
+                resolve(resp);
+            } else {
+                reject(new WechatError(resp));
+            }
+        });
+    });
+}
+
+/**
+ * launch miniProgram
+ * @method launchMiniProgram
+ * @param {Object} data
+ * @param {String} data.userName - 公众号原始id，必填。
+ * @param {String} data.extMsg - 拉起小程序页面的可带参路径，不填默认拉起小程序首页。
+ * @param {String} data.profileType - 可选:  0普通\1硬件,默认0
+ */
+export function launchGGH(data) {
+    return new Promise((resolve, reject) => {
+        nativeLaunchGGH(data);
+        emitter.once('LaunchGGHFromWX.Resp', resp => {
             if (resp.errCode === 0) {
                 resolve(resp);
             } else {

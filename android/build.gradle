@@ -12,6 +12,12 @@ android {
       abiFilters "armeabi-v7a", "x86"
     }
   }
+
+  buildTypes{
+    release {}
+    releaseStaging {}
+    debug {}
+  }
 }
 
 allprojects {

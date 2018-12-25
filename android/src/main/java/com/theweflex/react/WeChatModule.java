@@ -28,6 +28,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.modelbiz.JumpToBizProfile;
 import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
@@ -214,6 +215,37 @@ public class WeChatModule extends ReactContextBaseJavaModule implements IWXAPIEv
     @ReactMethod
     public void launchMiniProgram(ReadableMap data, Callback callback){
         _launchMiniProgram(data,callback);
+    }
+
+    public void launchGGH(ReadableMap data, Callback callback){
+        _launchGGH(data,callback);
+    }
+
+    private void _launchGGH(final ReadableMap data, final Callback callback){
+        if (api == null) {
+            callback.invoke(NOT_REGISTERED);
+            return;
+        }
+
+        JumpToBizProfile.Req req = new JumpToBizProfile.Req();
+        if (!data.hasKey("userName")) {
+            callback.invoke(INVALID_ARGUMENT);
+            return;
+        }
+        req.toUserName = data.getString("userName"); // 填小程序原始id
+
+        if (data.hasKey("extMsg")) {
+            req.extMsg = data.getString("extMsg");
+        }else{
+            req.extMsg = "";
+        }
+
+        if (data.hasKey("profileType")) {
+            req.profileType = data.getInt("profileType");
+        }else{
+            req.profileType = 0;
+        }
+        callback.invoke(api.sendReq(req));
     }
 
     private void _launchMiniProgram(final ReadableMap data, final Callback callback){
