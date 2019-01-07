@@ -1,6 +1,6 @@
 {
   "name": "react-native-wechat",
-  "version": "1.9.10",
+  "version": "1.9.11",
   "description": "react-native library for wechat app",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/weflex/react-native-wechat.git"
+    "url": "git+ssh://git@github.com/xiaoleiooo/react-native-wechat.git"
   },
   "keywords": [
     "wechat",
