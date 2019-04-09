@@ -305,6 +305,26 @@ Sends request for proceeding payment, then returns an object:
 | errCode | Number | 0 if authorization successed        |
 | errStr  | String | Error message if any error occurred |
 
+#### launchMiniProgram(payload)
+
+- `payload` {Object} the launchMiniProgram data
+  - `userName` {String} 小程序原始ID，必填
+  - `path` {String} 可选:  拉起小程序页面的可带参路径，不填默认拉起小程序首页
+  - `miniprogramType` {String} 可选:  0正式版\1开发版\2体验版和,默认0
+- returns {null}
+PS：打开小程序有要求，具体参考微信官网
+
+
+#### launchGGH(payload)
+
+- `payload` {Object} the launchGGH data
+  - `userName` {String} 公众号类型ID，必填
+  - `extMsg` {String} 要带过去的内容
+  - `profileType` {String} 公众号类型,默认0
+- returns {null}
+PS：打开公众号有要求，具体参考微信官网
+
+
 ## Installation
 
 ```sh
