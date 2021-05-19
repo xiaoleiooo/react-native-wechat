@@ -28,7 +28,6 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
-import com.tencent.mm.opensdk.modelbiz.JumpToBizProfile;
 import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
@@ -218,36 +217,38 @@ public class WeChatModule extends ReactContextBaseJavaModule implements IWXAPIEv
         _launchMiniProgram(data,callback);
     }
 
-    public void launchGGH(ReadableMap data, Callback callback){
-        _launchGGH(data,callback);
-    }
-
-    private void _launchGGH(final ReadableMap data, final Callback callback){
-        if (api == null) {
-            callback.invoke(NOT_REGISTERED);
-            return;
-        }
-
-        JumpToBizProfile.Req req = new JumpToBizProfile.Req();
-        if (!data.hasKey("userName")) {
-            callback.invoke(INVALID_ARGUMENT);
-            return;
-        }
-        req.toUserName = data.getString("userName"); // 填小程序原始id
-
-        if (data.hasKey("extMsg")) {
-            req.extMsg = data.getString("extMsg");
-        }else{
-            req.extMsg = "";
-        }
-
-        if (data.hasKey("profileType")) {
-            req.profileType = data.getInt("profileType");
-        }else{
-            req.profileType = 0;
-        }
-        callback.invoke(api.sendReq(req));
-    }
+//    //该功能被阉割了不开放了
+//    //https://developers.weixin.qq.com/community/develop/doc/0006484b484218e88bf99df8f56400
+//    public void launchGGH(ReadableMap data, Callback callback){
+//        _launchGGH(data,callback);
+//    }
+//
+//    private void _launchGGH(final ReadableMap data, final Callback callback){
+//        if (api == null) {
+//            callback.invoke(NOT_REGISTERED);
+//            return;
+//        }
+//
+//        JumpToBizProfile.Req req = new JumpToBizProfile.Req();
+//        if (!data.hasKey("userName")) {
+//            callback.invoke(INVALID_ARGUMENT);
+//            return;
+//        }
+//        req.toUserName = data.getString("userName"); // 填小程序原始id
+//
+//        if (data.hasKey("extMsg")) {
+//            req.extMsg = data.getString("extMsg");
+//        }else{
+//            req.extMsg = "";
+//        }
+//
+//        if (data.hasKey("profileType")) {
+//            req.profileType = data.getInt("profileType");
+//        }else{
+//            req.profileType = 0;
+//        }
+//        callback.invoke(api.sendReq(req));
+//    }
 
     private void _launchMiniProgram(final ReadableMap data, final Callback callback){
         if (api == null) {
@@ -314,7 +315,11 @@ public class WeChatModule extends ReactContextBaseJavaModule implements IWXAPIEv
                         imageCallback.invoke(bitmap);
                     }
                 } else {
-                   // throw new Exception("Empty bitmap");
+                    try {
+                        throw new Exception("Empty bitmap");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 

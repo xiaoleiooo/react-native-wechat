@@ -4,12 +4,14 @@ def safeExtGet(prop, fallback) {
   rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
 }
 
+
 android {
   compileSdkVersion safeExtGet('compileSdkVersion', 28)
   buildToolsVersion safeExtGet('buildToolsVersion', '28.0.3')
+
   defaultConfig {
     minSdkVersion safeExtGet('minSdkVersion', 16)
-    targetSdkVersion safeExtGet('targetSdkVersion', 28)
+    targetSdkVersion safeExtGet('targetSdkVersion', 23)
     versionCode 1
     versionName "1.0"
     ndk {
@@ -34,5 +36,5 @@ allprojects {
 dependencies {
   api 'com.facebook.react:react-native:+'
 //  compile files('libs/libammsdk.jar')
-  api 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.1.6'
+  api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:6.7.0'
 }
